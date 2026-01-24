@@ -1,16 +1,19 @@
 package org.skypro.skyshop;
 
 import org.skypro.skyshop.basket.productBasket;
+import org.skypro.skyshop.product.DiscountedProduct;
+import org.skypro.skyshop.product.FixPriceProduct;
 import org.skypro.skyshop.product.Product;
+import org.skypro.skyshop.product.simpleProduct;
 
 public class App {
     public static void main(String[] args) {
-        Product laptop=new Product("Ноутбук", 75000);
-        Product phone = new Product("Смартфон", 35000);
-        Product headphones = new Product("Наушники", 5000);
-        Product tablet = new Product("Планшет", 25000);
-        Product charger = new Product("Зарядное устройство", 1500);
-        Product mouse = new Product("Мышь", 1200);
+        simpleProduct laptop=new simpleProduct("Ноутбук", 75000);
+        DiscountedProduct phone = new DiscountedProduct("Смартфон", 35000, 15);
+        FixPriceProduct headphones = new FixPriceProduct("Наушники");
+        simpleProduct tablet = new simpleProduct("Планшет", 25000);
+        simpleProduct charger = new simpleProduct("Зарядное устройство", 1500);
+        simpleProduct mouse = new simpleProduct("Мышь", 1200);
         productBasket basket=new productBasket();
         basket.addProduct(laptop);
         basket.addProduct(phone);
@@ -21,10 +24,10 @@ public class App {
         basket.basketContents();
         String searchName1="Смартфон";
         boolean result= basket.productContents(searchName1);
-        System.out.println("Товар '" + searchName1 + "' в корзине: " + result);
-        String searchName2="Фотоаппарат";
+        System.out.println("Товар '" + searchName1 + " в корзине: " + result);
+        String searchName2="Телевизор";
         boolean result1= basket.productContents(searchName2);
-        System.out.println("Товар '" + searchName1 + "' в корзине: " + result1);
+        System.out.println("Товар '" + searchName2 + "' в корзине: " + result1);
         basket.clear();
         basket.basketContents();
         System.out.println("Общая стоимость: " + basket.totalCost() + " руб.");
