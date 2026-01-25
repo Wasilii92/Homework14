@@ -22,4 +22,6 @@ private static final int FIXED_PRICE = 5000;
         return getName() + ": Фиксированная цена " + FIXED_PRICE;
 
     }
+
+
 }
