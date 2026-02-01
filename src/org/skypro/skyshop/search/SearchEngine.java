@@ -64,7 +64,46 @@ public class SearchEngine  {
     public int getCapacity() {
         return items.length;
     }
+    public Searchable findBestMatch(String search) throws BestResultNotFound {
+        if (search == null || search.isBlank()) {
+            throw new IllegalArgumentException("Поисковый запрос не может быть пустым");
+        }
+
+        Searchable bestMatch = null;
+        int maxCount = -1;
+
+        for (Searchable item : items) {
+            if (item != null) {
+                String searchTerm = item.getSearchTerm();
+                if (searchTerm != null) {
+                    // Реализация алгоритма из задания
+                    int count = 0;
+                    int index = 0;
+                    int substringIndex = searchTerm.indexOf(search, index);
+
+                    while (substringIndex != -1) {
+                        count++;
+                        index = substringIndex + search.length();
+                        substringIndex = searchTerm.indexOf(search, index);
+                    }
+
+                    if (count > maxCount) {
+                        maxCount = count;
+                        bestMatch = item;
+                    }
+                }
+            }
+        }
+
+        if (bestMatch == null) {
+            throw new BestResultNotFound(search);
+        }
+
+        return bestMatch;
+    }
 }
+
+
 
 
 
