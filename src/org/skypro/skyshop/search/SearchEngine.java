@@ -1,69 +1,60 @@
 package org.skypro.skyshop.search;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+
 public class SearchEngine  {
-    private final Searchable[] items;
+    private final List<Searchable> items;
     private int count;
 
     public SearchEngine(int capacity) {
-
-        this.items = new Searchable[capacity];
+        this.items = new LinkedList<>();
         this.count = 0;
     }
 
     public void add(Searchable item) {
-
-
-        if (count < items.length) {
-            items[count] = item;
-            count++;
-        }
+        items.add(item);
+        count++;
     }
 
-    public Searchable[] search(String query) {
-        Searchable[] results = new Searchable[5];
+    public List<Searchable> search(String query) {
+        List<Searchable> results = new ArrayList<>();
+
         if (query == null || query.trim().isEmpty()) {
             return results;
         }
 
         String lowerCaseQuery = query.toLowerCase().trim();
 
-        int foundCount = 0;
-
-
-        for (int i = 0; i < count && foundCount < 5; i++) {
-            Searchable item = items[i];
-
+        for (Searchable item : items) {
             if (item != null) {
                 String searchTerm = item.getSearchTerm();
-
-
                 if (searchTerm != null) {
                     String lowerCaseSearchTerm = searchTerm.toLowerCase();
-
-
                     if (lowerCaseSearchTerm.contains(lowerCaseQuery)) {
-                        results[foundCount] = item;
-                        foundCount++;
+                        results.add(item);
                     }
                 }
             }
         }
 
-        System.out.println("Всего найдено результатов: " + foundCount);
-
-
-        return Arrays.stream(results)
-                .filter(item -> item != null)
-                .toArray(Searchable[]::new);
+        System.out.println("Всего найдено результатов: " + results.size());
+        return results;
     }
 
     public int getCount() {
         return count;
     }
 
+
     public int getCapacity() {
-        return items.length;
+        return items.size();
     }
+
+        Searchable bestMatch = null;
+        int maxCount = -1;
+
     public Searchable findBestMatch(String search) throws BestResultNotFound {
         if (search == null || search.isBlank()) {
             throw new IllegalArgumentException("Поисковый запрос не может быть пустым");
@@ -76,7 +67,6 @@ public class SearchEngine  {
             if (item != null) {
                 String searchTerm = item.getSearchTerm();
                 if (searchTerm != null) {
-                    // Реализация алгоритма из задания
                     int count = 0;
                     int index = 0;
                     int substringIndex = searchTerm.indexOf(search, index);
@@ -87,7 +77,7 @@ public class SearchEngine  {
                         substringIndex = searchTerm.indexOf(search, index);
                     }
 
-                    if (count > maxCount) {
+                    if (count > 0 && count > maxCount) {
                         maxCount = count;
                         bestMatch = item;
                     }
@@ -102,6 +92,7 @@ public class SearchEngine  {
         return bestMatch;
     }
 }
+
 
 
 
