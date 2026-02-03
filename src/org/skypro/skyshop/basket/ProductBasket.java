@@ -15,13 +15,10 @@ public class ProductBasket { private Map<String,List<Product> > productsMap;
         productsMap.computeIfAbsent(product.getName(), k -> new ArrayList<>()).add(product);
     }
     public int totalCost() {
-        int total = 0;
-        for (List<Product> productList : productsMap.values()) {
-            for (Product product : productList) {
-                total += product.getPrice();
-            }
-        }
-        return total;
+        return productsMap.values().stream()
+                .flatMap(Collection::stream)
+                .mapToInt(Product::getPrice)
+                .sum();
     }
 
 
@@ -34,45 +31,38 @@ public class ProductBasket { private Map<String,List<Product> > productsMap;
         productsMap.clear();
     }
 
-    public int countSpecialProducts() {
-        int specialCount = 0;
-        for (List<Product> productList : productsMap.values()) {
-            for (Product product : productList) {
-                if (product.isSpecial()) {
-                    specialCount++;
-                }
-            }
-        }
-        return specialCount;
+    private long getSpecialCount() {
+        return productsMap.values().stream()
+                .flatMap(Collection::stream)
+                .filter(Product::isSpecial)
+                .count();
     }
 
-    public void basketContents() {
+    public List<Object> basketContents() {
         if (productsMap.isEmpty()) {
             System.out.println("В корзине пусто");
-            return;
+            return null;
         }
 
         // Выводим каждый товар с использованием toString()
-        for (List<Product> productList : productsMap.values()) {
-            for (Product product : productList) {
-                System.out.println(product);
-            }
-        }
+        productsMap.values().stream()
+                .flatMap(Collection::stream)
+                .forEach(System.out::println);
+
 
         // Выводим итоговую сумму и количество специальных товаров
-        System.out.println("Итого: " + totalCost());
-        System.out.println("Специальных товаров: " + countSpecialProducts());
+         System.out.println("Итого: " + totalCost());
+        System.out.println("Специальных товаров: " + getSpecialCount());
+        return List.of();
     }
     public List<Product> removeProductByName(String name) {
-        List<Product> removedProducts = new ArrayList<>();
-
         if (productsMap.containsKey(name)) {
-            removedProducts = productsMap.remove(name);
+            return productsMap.remove(name);
         }
+        return new ArrayList<>();
+    }
+}
 
-        return removedProducts;
-    }
-    }
 
 
 
