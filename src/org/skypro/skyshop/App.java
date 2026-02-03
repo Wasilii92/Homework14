@@ -1,13 +1,13 @@
 package org.skypro.skyshop;
 
-import org.skypro.skyshop.basket.productBasket;
+import org.skypro.skyshop.basket.ProductBasket;
 import org.skypro.skyshop.product.*;
 import org.skypro.skyshop.search.BestResultNotFound;
 import org.skypro.skyshop.search.SearchEngine;
 import org.skypro.skyshop.search.Searchable;
 
-import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 public class App {
     public static void main(String[] args) {
@@ -19,7 +19,7 @@ public class App {
         SimpleProduct charger = new SimpleProduct("Зарядное устройство", 1500);
         SimpleProduct mouse = new SimpleProduct("Мышь", 1200);
 
-        productBasket basket = new productBasket();
+        ProductBasket basket = new ProductBasket();
         basket.addProduct(laptop);
         basket.addProduct(phone);
         basket.addProduct(headphones);
@@ -56,38 +56,37 @@ public class App {
         System.out.println("В SearchEngine добавлено: " + searchEngine.getCount() + " элементов");
 
         System.out.println("\n1. Поиск по запросу 'Ноутбук':");
-        List<Searchable> results1 = searchEngine.search("Ноутбук");
+        Map<String, Searchable> results = searchEngine.search("Ноутбук");
         System.out.println("Результаты: ");
-        for (Searchable result : results1) {
+        for (Searchable result : results.values())  {
             System.out.println("  - " + result.getSearchTerm());
         }
 
         System.out.println("\n2. Поиск по запросу 'смартфон':");
-        List<Searchable> results2 = searchEngine.search("смартфон");
+        Map<String, Searchable> results2 = searchEngine.search("смартфон");
         System.out.println("Результаты: ");
-        for (Searchable result : results2) {
+        for (Searchable result : results2.values()) {
             System.out.println("  - " + result.getSearchTerm());
         }
 
         System.out.println("\n3. Поиск по запросу '2024':");
-        List<Searchable> results3 = searchEngine.search("2024");
+        Map<String, Searchable> results3 = searchEngine.search("2024");
         System.out.println("Результаты: ");
-        for (Searchable result : results3) {
+        for (Searchable result : results3.values()) {
             System.out.println("  - " + result.getSearchTerm());
         }
 
         System.out.println("\n4. Поиск по запросу 'выбрать':");
-        List<Searchable> results4 = searchEngine.search("выбрать");
+        Map<String, Searchable> results4 = searchEngine.search("выбрать");
         System.out.println("Результаты: ");
-        for (Searchable result : results4) {
+        for (Searchable result : results4.values()) {
             System.out.println("  - " + result.getSearchTerm());
         }
 
         System.out.println("\n5. Поиск по запросу 'xyz' (нет результатов):");
-        List<Searchable> results5 = searchEngine.search("xyz");
+        Map<String, Searchable> results5 = searchEngine.search("xyz");
         System.out.println("Результаты: " + (results5.isEmpty() ? "Список пуст" : "Найдено " + results5.size() + " элементов"));
 
-        System.out.println("\n=== Демонстрация метода findBestMatch ===");
 
         SearchEngine bestMatchEngine = new SearchEngine(20);
 
@@ -112,9 +111,7 @@ public class App {
             System.out.println("Исключение: " + e.getMessage());
         }
 
-        System.out.println("\n=== Демонстрация удаления продуктов из корзины ===\n");
-
-        productBasket demoBasket = new productBasket();
+        ProductBasket demoBasket = new ProductBasket();
 
         SimpleProduct phone1 = new SimpleProduct("Смартфон", 35000);
         SimpleProduct phone2 = new SimpleProduct("Смартфон", 35000); // дубликат

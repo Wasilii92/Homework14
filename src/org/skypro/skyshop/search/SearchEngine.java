@@ -1,8 +1,5 @@
 package org.skypro.skyshop.search;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class SearchEngine  {
     private final List<Searchable> items;
@@ -18,10 +15,11 @@ public class SearchEngine  {
         count++;
     }
 
-    public List<Searchable> search(String query) {
-        List<Searchable> results = new ArrayList<>();
+    public Map<String, Searchable> search(String query) {
+        Map<String, Searchable> results = new TreeMap<>();
 
         if (query == null || query.trim().isEmpty()) {
+            System.out.println("Всего найдено результатов: 0");
             return results;
         }
 
@@ -33,7 +31,8 @@ public class SearchEngine  {
                 if (searchTerm != null) {
                     String lowerCaseSearchTerm = searchTerm.toLowerCase();
                     if (lowerCaseSearchTerm.contains(lowerCaseQuery)) {
-                        results.add(item);
+                        // Используем имя как ключ, TreeMap автоматически сортирует по ключу
+                        results.put(searchTerm, item);
                     }
                 }
             }
@@ -42,7 +41,6 @@ public class SearchEngine  {
         System.out.println("Всего найдено результатов: " + results.size());
         return results;
     }
-
     public int getCount() {
         return count;
     }
