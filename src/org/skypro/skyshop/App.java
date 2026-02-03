@@ -8,6 +8,7 @@ import org.skypro.skyshop.search.Searchable;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class App {
     public static void main(String[] args) {
@@ -53,38 +54,40 @@ public class App {
         searchEngine.add(article2);
         searchEngine.add(article3);
 
+        searchEngine.add(new SimpleProduct("Ноутбук", 80000));
+        searchEngine.add(new Article("Лучшие наушники 2024", "Другое описание"));
         System.out.println("В SearchEngine добавлено: " + searchEngine.getCount() + " элементов");
 
         System.out.println("\n1. Поиск по запросу 'Ноутбук':");
-        Map<String, Searchable> results = searchEngine.search("Ноутбук");
+        Set<Searchable> results = searchEngine.search("Ноутбук");
         System.out.println("Результаты: ");
-        for (Searchable result : results.values())  {
+        for (Searchable result : results)  {
             System.out.println("  - " + result.getSearchTerm());
         }
 
         System.out.println("\n2. Поиск по запросу 'смартфон':");
-        Map<String, Searchable> results2 = searchEngine.search("смартфон");
+        Set<Searchable> results2 = searchEngine.search("смартфон");
         System.out.println("Результаты: ");
-        for (Searchable result : results2.values()) {
+        for (Searchable result : results2) {
             System.out.println("  - " + result.getSearchTerm());
         }
 
         System.out.println("\n3. Поиск по запросу '2024':");
-        Map<String, Searchable> results3 = searchEngine.search("2024");
+        Set<Searchable> results3 = searchEngine.search("2024");
         System.out.println("Результаты: ");
-        for (Searchable result : results3.values()) {
+        for (Searchable result : results3) {
             System.out.println("  - " + result.getSearchTerm());
         }
 
         System.out.println("\n4. Поиск по запросу 'выбрать':");
-        Map<String, Searchable> results4 = searchEngine.search("выбрать");
+        Set<Searchable> results4 = searchEngine.search("выбрать");
         System.out.println("Результаты: ");
-        for (Searchable result : results4.values()) {
+        for (Searchable result : results4) {
             System.out.println("  - " + result.getSearchTerm());
         }
 
         System.out.println("\n5. Поиск по запросу 'xyz' (нет результатов):");
-        Map<String, Searchable> results5 = searchEngine.search("xyz");
+        Set<Searchable> results5 = searchEngine.search("xyz");
         System.out.println("Результаты: " + (results5.isEmpty() ? "Список пуст" : "Найдено " + results5.size() + " элементов"));
 
 
